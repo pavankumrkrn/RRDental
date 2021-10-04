@@ -10,7 +10,8 @@ const { authenticate } = require("./Auth/Authentication");
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit: '25mb'}));
+app.use(express.urlencoded({limit: '25mb'}));
 app.use(express.static("public"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -33,6 +34,8 @@ app.get(
   orderController.getIncomeCompleteOrders
 );
 
+app.get("/logout", authenticate, mainController.logout);
+
 app.post("/authenticate/user", mainController.login);
 
 app.get("/order", orderController.create);
@@ -48,5 +51,7 @@ app.get("/getOrder/:orderId", authenticate, orderController.getOrder);
 app.post("/updateOrder/:orderId", authenticate, orderController.updateOrder)
 
 app.delete("/deleteOrders", authenticate, orderController.deleteOrder);
+
+app.post("/sendOrders", authenticate, orderController.sendOrders);
 
 app.post("/completeOrder", authenticate, orderController.completeOrder);

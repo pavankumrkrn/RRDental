@@ -1,4 +1,6 @@
+
 const moment = require("moment");
+const fs = require('fs');
 const { URL } = require("../MongoDb/mongoUrl");
 const mongodb = require("mongodb");
 const mongoClient = mongodb.MongoClient
@@ -10,8 +12,7 @@ const dashBoard = async (req, res) => {
       useUnifiedTopology: true,
     });
     const db = client.db("OrderApplication");
-    const orders = await db.collection('Orders').find().toArray();
-    // console.log(orders);
+    const orders = await db.collection('Orders').find().toArray()
     res.render("dashBoard", {
       orders : orders,
       mls : {
@@ -29,6 +30,7 @@ const dashBoard = async (req, res) => {
     });
     
   } catch (error) {
+    console.log(error);
     
   }
   

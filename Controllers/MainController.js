@@ -7,6 +7,20 @@ const index = async (req, res) => {
   res.render("index");
 };
 
+const logout = async (req,res) => {
+  console.log("Hi")
+  try {
+    res.cookie("access_token", '', {
+      httpOnly: true
+    });
+    res.json({
+      status : 200
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const login = async (req, res) => {
   try {
     const { user } = req.body;
@@ -47,4 +61,5 @@ const login = async (req, res) => {
 module.exports = {
   index,
   login,
+  logout
 };

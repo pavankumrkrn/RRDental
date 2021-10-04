@@ -1,11 +1,14 @@
 const order = {
+  orderId : "200001",
   doctorName: "",
   date: "",
   clinicName: "",
   patientName: "",
   contactNumber: "",
   expectedDate: "",
-  time: "",
+  hrs: "",
+  min: "",
+  ampm: "",
   zirconia: {
     zirconiaClassic: false,
     zirconiaPremium: false,
@@ -31,36 +34,71 @@ const order = {
   mlsClassic: false,
   mlsPremium: false,
   mlsInfo: "",
-  additionalInfo: "",
   enclose: "",
   shade: "",
   tray: false,
   byte: false,
-  imageUpload: "",
-  left: {
-    name: "left",
+  upperLeft: {
+    name: "Upper Left",
     value: "",
   },
-  right: {
-    name: "right",
+  upperRight: {
+    name: "Upper Right",
     value: "",
   },
-  top: {
-    name: "top",
+  bottomLeft: {
+    name: "Bottom Left",
     value: "",
   },
-  bottom: {
-    name: "bottom",
+  bottomRight: {
+    name: "Bottom Right",
     value: ""
-  }
+  },
+  files : []
 };
 
-$("#createOrderForm").submit(function (e) {
+
+$(document).ready(()=>{
+  for(let i=1; i<=12; i++){
+    $('#hrs')
+          .append($('<option>', { value : i })
+          .text(i));
+  }
+  let digit
+  for(let i=0; i<=59; i++){
+    if(i.toString().length === 1){
+      digit = "0"+i
+    } else {
+      digit = i
+    }
+    $('#min')
+          .append($('<option>', { value : digit })
+          .text(digit))
+  }
+});
+
+
+
+$("#contactNumber").on('input', (e) => {
+  let { value } = e.target;
+  if(value.length === 1) {
+    if(parseInt(value) < 6) {
+      $("#contactNumber").val('');
+    }
+  }
+  if(value.length >= 10) {
+    $("#contactNumber").val(value.substr(0,10));
+  }
+})
+
+$("#createOrderForm").submit((e) => {
   e.preventDefault();
+    $("#createOrderForm").attr("style", "opacity : 0.5");
+    $("#loading").attr('style', "display : block");
   const formData = e.currentTarget.elements;
-  console.log(formData);
+  order.orderId+='-'+Date.now();
   for (let i in order) {
-    if (typeof order[i] !== "object" && i !== "completed") {
+    if (typeof order[i] !== "object" && i !== "completed" && i!== "files" && i!=='orderId') {
       if (formData[i].type === "checkbox") {
         order[i] = formData[i].checked;
       } else {
@@ -70,30 +108,34 @@ $("#createOrderForm").submit(function (e) {
   }
   fillUpZirAndImplant(formData);
   order['completed'] = false;
-  if (order.left.value === "" || order.right.value === "" || order.top.value === "" || order.bottom.value === "") {
-    swal("Please select left, right, top and bottom");
+  console.log(order);
+  if (order.upperLeft.value === "" || order.upperRight.value === "" || order.bottomLeft.value === "" || order.bottomRight.value === "") {
+    swal("Please select upperLeft, upperRight, bottomLeft and bottomRight");
     return;
   }
+
   $.ajax({
     url: "/createOrder",
     contentType: "application/json",
-    data: JSON.stringify({ order }),
+    data: JSON.stringify({order}),
     type: "POST",
-    success: function (response) {
+    success: (response) => {
       if (response.error) {
         swal(response.error)
       }
       else {
+        $("#createOrderForm").attr("style", "opacity : 1");
+        $("#loading").attr('style', "display : none");
         swal({
           text: response.message,
           type: "success"
-        }).then(function () {
-          location.href = response.url;
-        });
+        })
       }
     }
   })
 });
+
+
 
 const fillUpZirAndImplant = (formData) => {
   for (let i in order.zirconia) {
@@ -104,17 +146,15 @@ const fillUpZirAndImplant = (formData) => {
   }
 };
 
-$("#imageUpload").change((e)=>{
+$("#imageUpload").change(async (e)=>{
   const value = e.target.value;
   const extension = value.split(".")[1]
   if(extension === 'png' || extension === 'jpg' || extension === 'jpeg') {
-    const file = e.target.files[0];
-    const reader =  new FileReader();
-    reader.onload = () => {
-      var dataURL = reader.result;
-      order.imageUpload = dataURL
+    for(let i=0; i<e.target.files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = () => order.files.push(reader.result)
+      reader.readAsDataURL(e.target.files[i]);
     }
-    reader.readAsDataURL(file)
   } else {
     swal("Images files only. Supported files are jpg, jpeg and png");
     e.preventDefault();
@@ -122,35 +162,59 @@ $("#imageUpload").change((e)=>{
   }
 });
 
-
-$("#left").click((e)=>{
-  order.left.value = e.target.textContent;
-  if (document.querySelector('.leftActive')) {
-      document.querySelector('.leftActive').classList.remove('leftActive');
-  }
-  e.target.setAttribute('class', 'leftActive');
+$("#uleftB").click((e)=>{
+  order.upperLeft.value = '';
+  $("#uleftI").val('');
+  $('.uleftActive').removeClass('uleftActive')
 });
 
-$("#right").click((e)=>{
-  order.right.value = e.target.textContent;
-  if (document.querySelector('.rightActive')) {
-      document.querySelector('.rightActive').classList.remove('rightActive');
-  }
-  e.target.setAttribute('class', 'rightActive');
+$("#urightB").click((e)=>{
+  order.upperRight.value = '';
+  $("#urightI").val('');
+  $('.urightActive').removeClass('urightActive')
 });
 
-$("#top").click((e)=>{
-  order.top.value = e.target.textContent;
-  if (document.querySelector('.topActive')) {
-      document.querySelector('.topActive').classList.remove('topActive');
-  }
-  e.target.setAttribute('class', 'topActive');
+$("#bleftB").click((e)=>{
+  order.bottomLeft.value = '';
+  $("#bleftI").val('');
+  $('.bleftActive').removeClass('bleftActive')
 });
 
-$("#bottom").click((e)=>{
-  order.bottom.value = e.target.textContent;
-  if (document.querySelector('.bottomActive')) {
-      document.querySelector('.bottomActive').classList.remove('bottomActive');
+$("#bRightB").click((e)=>{
+  order.bottomRight.value = '';
+  $("#bRightI").val('');
+  $('.brightActive').removeClass('brightActive')
+});
+
+
+$("#upperLeft").click((e)=>{
+  if(order.upperLeft.value.length < 8 && e.target.nodeName === 'LI' && e.target.className !== 'uleftActive') {
+    order.upperLeft.value += e.target.textContent;
+    $("#uleftI").val(order.upperLeft.value);
+    e.target.setAttribute('class', 'uleftActive');
   }
-  e.target.setAttribute('class', 'bottomActive');
+});
+
+$("#upperRight").click((e)=>{
+  if(order.upperRight.value.length < 8 && e.target.nodeName === 'LI' && e.target.className !== 'urightActive') {
+    order.upperRight.value += e.target.textContent;
+    $("#urightI").val(order.upperRight.value)
+    e.target.setAttribute('class', 'urightActive');
+  }
+});
+
+$("#bottomLeft").click((e)=>{
+  if(order.bottomLeft.value.length < 8 && e.target.nodeName === 'LI' && e.target.className !== 'bleftActive') {
+    order.bottomLeft.value += e.target.textContent;
+    $("#bleftI").val(order.bottomLeft.value)
+    e.target.setAttribute('class', 'bleftActive');
+  }
+});
+
+$("#bottomRight").click((e)=>{
+  if(order.bottomRight.value.length < 8 && e.target.nodeName === 'LI' && e.target.className !== 'brightActive') {
+    order.bottomRight.value += e.target.textContent;
+    $("#bRightI").val(order.bottomRight.value)
+    e.target.setAttribute('class', 'brightActive');
+  }
 });

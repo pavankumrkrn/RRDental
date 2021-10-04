@@ -11,13 +11,47 @@
   <script src="Bootstrap/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .leftActive, .rightActive, .topActive, .bottomActive {
+    .uleftActive,
+    .urightActive,
+    .bleftActive,
+    .brightActive {
       background-color: #34abf4;
+    }
+
+    .time {
+      margin-top: 25px;
+    }
+    #loading {
+      display: none;
+      z-index: 999;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(204, 201, 201);
+      border-radius: 50%;
+      border-top-color: navy;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @-webkit-keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
     }
   </style>
 </head>
 
 <body class="body_margin">
+  <div id="loading"></div>
   <form id="createOrderForm">
     <div class="container-fluid main">
       <div class="col-xs-12">
@@ -46,7 +80,7 @@
                 </div>
                 <div class="col-sm-3 col-xs-12 ">
                   <div class="row dr_details">
-                    <label>Date </label><input type="date" name="date" id="date" required>
+                    <label>Date </label><input type="text" name="date" id="date" required onfocus="(this.type='date')">
                   </div>
                 </div>
               </div>
@@ -73,14 +107,27 @@
                     <label>Contact No </label><input type="number" name="contactNumber" id="contactNumber" required>
                   </div>
                 </div>
-                <div class="col-sm-4 col-xs-12 ">
-                  <div class="row dr_details right-gap"> 
-                    <label>Expected Date </label><input type="date" name="expectedDate" id="expectedDate" required>
+                <div class="col-sm-5 col-xs-12 ">
+                  <div class="row dr_details right-gap">
+                    <label>Expected Date </label><input type="text" name="expectedDate" id="expectedDate" required  onfocus="(this.type='date')">
                   </div>
                 </div>
-                <div class="col-sm-3 col-xs-12 ">
-                  <div class="row dr_details ">
-                    <label>Time </label><input type="time" name="time" id="time" required>
+              </div>
+              <div class="row time">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="row dr_details right-gap">
+                    <label>Time </label>
+                      <div class="col-sm-3"><select name="hrs" id="hrs" class="form-control" required>
+                        <option value="">Hrs</option>
+                      </select></div>
+                      <div class="col-sm-3"><select name="min" id="min" class="form-control" required>
+                        <option value="">Mins</option>
+                      </select></div>
+                      <div class="col-sm-3"><select name="ampm" id="ampm" class="form-control" required>
+                        <option value="">AM or PM</option>
+                        <option value="am">A.M</option>
+                        <option value="pm">P.M</option>
+                      </select></div>
                   </div>
                 </div>
               </div>
@@ -160,28 +207,34 @@
               </div>
               <div class="col-xs-12 list border-btm">
                 <ol class="btm-mr">
-                  <li>1. MLS Classic<input type="checkbox" id="mlsClassic" name="mlsClassic"
-                      ></li>
-                  <li>2. MLS Premium <input type="checkbox" id="mlsPremium" name="mlsPremium"
-                      ></li>
+                  <li>1. MLS Classic<input type="checkbox" id="mlsClassic" name="mlsClassic"></li>
+                  <li>2. MLS Premium <input type="checkbox" id="mlsPremium" name="mlsPremium"></li>
                 </ol>
               </div>
               <div class="col-xs-12  padding_remove">
                 <div class="listItems">
                   <div class="col-xs-6 list-2">
-                    <ul id="left">
-                      <li>8</li>
-                      <li>7</li>
-                      <li>6</li>
-                      <li>5</li>
-                      <li>4</li>
-                      <li>3</li>
-                      <li>2</li>
-                      <li>1</li>
-                    </ul>
+                      <ul id="upperLeft">
+                        <li>8</li>
+                        <li>7</li>
+                        <li>6</li>
+                        <li>5</li>
+                        <li>4</li>
+                        <li>3</li>
+                        <li>2</li>
+                        <li>1</li>
+                      </ul>
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <input type="text" id="uleftI" class="form-control" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <button class="btn btn-primary" id="uleftB" type="button">Clear</button>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-xs-6 list-2">
-                    <ul id="right">
+                    <ul id="upperRight">
                       <li>1</li>
                       <li>2</li>
                       <li>3</li>
@@ -191,11 +244,19 @@
                       <li>7</li>
                       <li>8</li>
                     </ul>
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <input type="text" id="urightI" class="form-control" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <button id="urightB" class="btn btn-primary" type="button">Clear</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="listItems-2">
                   <div class="col-xs-6 list-2">
-                    <ul id="top">
+                    <ul id="bottomLeft">
                       <li>8</li>
                       <li>7</li>
                       <li>6</li>
@@ -205,9 +266,17 @@
                       <li>2</li>
                       <li>1</li>
                     </ul>
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <input type="text" id="bleftI" class="form-control" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <button id="bleftB" class="btn btn-primary" type="button">Clear</button>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-xs-6 list-2">
-                    <ul id="bottom">
+                    <ul id="bottomRight">
                       <li>1</li>
                       <li>2</li>
                       <li>3</li>
@@ -217,6 +286,14 @@
                       <li>7</li>
                       <li>8</li>
                     </ul>
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <input type="text" id="bRightI" class="form-control" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <button id="bRightB" class="btn btn-primary" type="button">Clear</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <br>
@@ -228,14 +305,14 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-9 col-xs-12 ">
+              <!-- <div class="col-sm-9 col-xs-12 ">
                 <br>
                 <button class="primarybtn" type="button">Additional Instructions</button>
                 <br>
               </div>
               <div class="col-xs-12">
                 <textarea class="area-text area-2" id="additionalInfo" name="additionalInfo"></textarea>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-sm-3 pdr-0">
@@ -280,7 +357,7 @@
               <div class="col-xs-12 bdr-tp">
                 <div class="form-group upload_image">
                   <label for="exampleInputFile">Upload Images</label>
-                  <input type="file" id="imageUpload" name="imageUpload">
+                  <input type="file" id="imageUpload" class="file" name="imageUpload" multiple>
                 </div>
                 <p class="para">Please fill in all the details for better service</p>
                 <br>
@@ -301,6 +378,12 @@
     </div>
   </form>
 </body>
+<style>
+  .form-control {
+      margin-left: 9px;
+      margin-bottom: 9px;
+  }
+</style>
 <script language="JavaScript" type="text/javascript" src="Bootstrap/js/jquery-1.12.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="js/orderForm.js"></script>

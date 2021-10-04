@@ -32,7 +32,6 @@ body{font-family: 'Poppins', sans-serif;}
 .logo{
     padding: 10px 0;
     padding-right: 10px;
-    border-right: 2px solid #34abf4;
 }
 .logo img{
     margin-bottom: 5px;
@@ -54,6 +53,7 @@ body{font-family: 'Poppins', sans-serif;}
 }
 .order{
     padding: 10px;
+    border-left: 2px solid #34abf4;
 }
 .order-no{
     border: 2px solid #34abf4;

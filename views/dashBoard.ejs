@@ -7,15 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image" href="images/favicon.png">
     <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script src="Bootstrap/js/jquery-1.12.0.min.js"></script>
+    <script src="Bootstrap/js/bootstrap.min.js"></script>
+    
     <script>
-        $('#myModal').on('shown.bs.modal', function () {
-            $('#myInput').focus()
-        })
         $( document ).ready(function() {
             let url = location.href.split("/");
             let route = url[url.length-1]
@@ -24,14 +23,44 @@
                 $("#complete").prop("disabled", true);
             }
         });
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()
+        })
     </script>
+    <style>
+        #loading {
+      display: none;
+      z-index: 999;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(204, 201, 201);
+      border-radius: 50%;
+      border-top-color: navy;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
 
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @-webkit-keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    </style>
 </head>
-
 <body>
+    <div id="loading"></div>
+    <div id="dashboard">
     <div class="bgmain">
         <img src="images/rrlogo-white.svg" class="dashboard_logo">
-
     </div>
     <div class="container-fluid">
         <div class="col-xs-12">
@@ -41,23 +70,22 @@
                     <!-- Actual search box -->
                     <div class="form-group has-feedback has-search">
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" id="search" class="form-control" placeholder="Search" onkeyup="search()">
                     </div>
                 </div>
             </div>
 
             <div class="pull-right">
-                <span class="radiobutton"><input type="radio" name="dashboard" id="dashboard" onchange="getAll(this.id)">
-                    All</span></span>
-
+                <!-- <span class="radiobutton"><input type="radio" name="dashboard" id="dashboard" onchange="getAll(this.id)">
+                    All</span></span> -->
                 <span class="radiobutton"><input type="radio" name="incompleteOrders" id="incompleteOrders"
-                        onchange="getIncompleteOrders(this.id)"> Incomplete Orders</span></span>
+                        onchange="getIncompleteOrders()"> Incomplete Orders</span></span>
                 <span class="radiobutton"><input type="radio" name="completedOrders" id="completedOrders"
-                        onchange="getCompleteOrders(this.id)">
+                        onchange="getCompleteOrders()">
                     Complete Orders</span>
 
-                <button class="btn btn-primary"> Send Order ID <span class="glyphicon glyphicon-send"
-                        aria-hidden="true"></span></button>
+                <button class="btn btn-primary" type="button" onclick="sendOrder()"> Send Order ID <span class="glyphicon glyphicon-send"
+                        aria-hidden="true" ></button>
                 <button class="btn btn-success" type="button" id="complete" onclick="completeOrders()"> Completed <span
                         class="glyphicon glyphicon-ok"></span></button>
                 <button class="btn btn-primary" type="button" onclick="editOrder()"> Edit <span
@@ -71,7 +99,7 @@
         </div>
         <div class="col-xs-12">
             <div class="table-responsive">
-                <table class="clint-table table table-striped table-bordered table-hover">
+                <table class="clint-table table table-striped table-bordered table-hover" id="table">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -94,13 +122,11 @@
                             <th scope="col">Additional Instructions</th>
                             <th scope="col">Shade</th>
                             <th scope="col">Enclosed with the case</th>
-                            <th scope="col">Additional Info</th>
+                            <!-- <th scope="col">Additional Info</th> -->
                             <th scope="col">Images</th>
-
-
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="ordersL">
                         <% if(orders.length){ orders.forEach((order, orderIndex)=>{%>
                             <tr>
                                 <td scope="row"><input id="<%= order._id %>" type="checkbox" class="orders"
@@ -110,7 +136,7 @@
                                     <%= orderIndex+1 %>
                                 </td>
                                 <td>
-                                    <%= order._id %>
+                                    <%= order.orderId %>
                                 </td>
                                 <td>
                                     <%= order.doctorName %>
@@ -131,7 +157,7 @@
                                     <%= order.expectedDate %>
                                 </td>
                                 <td>
-                                    <%= order.time %>
+                                    <%= order.hrs + " : " +order.min +" " +order.ampm %>
                                 </td>
                                 <td>
                                     <%= Object.keys(order.zirconia).filter((i)=> order.zirconia[i]).join(', ') %>
@@ -147,20 +173,23 @@
                                 </td>
                                 <td><%= Object.keys(mls).filter(i => order[i]).join(', ') %></td>
                                 <td><%=
-                                    "left: "+order.left.value+" right: "+order.right.value+" top: "+order.top.value+" bottom: "+order.bottom.value
+                                    "Upper Left: "+order.upperLeft.value+" Upper Right: "+order.upperRight.value+" Bottom Left: "+order.bottomLeft.value+" Bottom Right: "+order.bottomRight.value
                                     %></td>
                                 <td>
                                     <%= order.mlsInfo %>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <%= order.additionalInfo %>
-                                </td>
+                                </td> -->
                                 <td>
                                     <%= order.shade %>
                                 </td>
                                 <td><%= Object.keys(enclosedWithCase).filter(i => order[i]).join(', ') %></td>
                                 <td><%= order.enclose %></td>
-                                <td><img src="<%= order.imageUpload %>" class="img-circle"></td>
+                                <td  onClick="get('<%= order._id %>')">  <% if(order.files) { order.files.forEach((file, fileIndex)=>{%>
+                                    <img src="<%= file %>" class="img-circle">
+                                    <%})} %>
+                                </td>
                             </tr>
                             <%})} %>
                     </tbody>
@@ -214,7 +243,7 @@
                             </ol>
 
                             <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
+                            <div class="carousel-inner" id="carouselImages">
                                 <div class="item active">
                                     <img src="images/photo3.jpg" alt="Los Angeles">
                                 </div>
@@ -239,15 +268,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Download Images</button>
+                        <!-- <button type="button" class="btn btn-primary">Download Images</button> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 <script src="../js/dashboard.js"></script>
 </html>
