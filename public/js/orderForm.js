@@ -111,6 +111,8 @@ $("#createOrderForm").submit((e) => {
   console.log(order);
   if (order.upperLeft.value === "" || order.upperRight.value === "" || order.bottomLeft.value === "" || order.bottomRight.value === "") {
     swal("Please select upperLeft, upperRight, bottomLeft and bottomRight");
+    $("#createOrderForm").attr("style", "opacity : 1");
+    $("#loading").attr('style', "display : none");
     return;
   }
 
@@ -121,7 +123,9 @@ $("#createOrderForm").submit((e) => {
     type: "POST",
     success: (response) => {
       if (response.error) {
-        swal(response.error)
+        swal(response.error).then(() => {
+          window.location.reload();
+        });
       }
       else {
         $("#createOrderForm").attr("style", "opacity : 1");
@@ -129,6 +133,8 @@ $("#createOrderForm").submit((e) => {
         swal({
           text: response.message,
           type: "success"
+        }).then(() => {
+          window.location.reload();
         })
       }
     }

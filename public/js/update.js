@@ -1,6 +1,9 @@
 var order = {};
 const renderOrder = async (id) => {
-    const response = await fetch('http://localhost:3001/getOrder/' + id).then((resp) => resp.json());
+    debugger;
+    const response = await fetch('http://rr-orderform.com/getOrder/' + id, {
+        mode: "no-cors"
+    }).then((resp) => resp.json());
     const existingOrder = response.order;
     const { zirconia, implant, mlsClassic, mlsPremium, tray, byte } = existingOrder;
     order = existingOrder
@@ -61,6 +64,8 @@ $("#updateOrderForm").submit((e) => {
     fillUpZirAndImplant(formData);
     if (order.upperLeft.value === "" || order.upperRight.value === "" || order.bottomLeft.value === "" || order.bottomRight.value === "") {
         swal("Please select upperLeft, upperRight, bottomLeft and bottomRight");
+        $("#createOrderForm").attr("style", "opacity : 1");
+        $("#loading").attr('style', "display : none");
         return;
       }
     console.log(order); 
@@ -71,7 +76,9 @@ $("#updateOrderForm").submit((e) => {
         type: "POST",
         success: function (response) {
             if (response.error) {
-                swal(response.error)
+                swal(response.error).then(()=> {
+                    window.location.reload();
+                })
             }
             else {
                 $("#updateOrderForm").attr("style", "opacity : 1");

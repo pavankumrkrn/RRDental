@@ -16,13 +16,13 @@ app.use(express.static("public"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(cookieParser()); 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.listen(port, async (req, res) => {
   console.log("Listening to " + port);
 });
 
-app.get("/", mainController.index);
+app.get("/adminlogin", mainController.index);
 
 app.get("/dashboard", authenticate, dashBoardController.dashBoard);
 
@@ -38,7 +38,7 @@ app.get("/logout", authenticate, mainController.logout);
 
 app.post("/authenticate/user", mainController.login);
 
-app.get("/order", orderController.create);
+app.get("/", orderController.create);
 
 app.get("/thankyou", feedbackController.thankyou);
 
