@@ -162,13 +162,13 @@ const render = (orders) => {
             order.mlsInfo +
             '</td>' +
             '<td>' +
-            order.additionalInfo +
+            order.enclose +
             '</td>' +
             '<td>' +
             order.shade +
             '</td>' +
             '<td>' + Object.keys(enclosedWithCase).filter(i => order[i]).join(', ') + '</td>' +
-            '<td>' + order.enclose + '</td>' +
+            // '<td>' + order.enclose + '</td>' +
             '<td id="' + order._id + "??" + '" onClick="getId(this.id)">' + files
         '</td>' +
             '</tr>'
