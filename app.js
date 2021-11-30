@@ -38,6 +38,8 @@ app.get("/logout", authenticate, mainController.logout);
 
 app.post("/authenticate/user", mainController.login);
 
+app.get("/incrementOrder", authenticate, orderController.incrementOrder);
+
 app.get("/", orderController.create);
 
 app.get("/thankyou", feedbackController.thankyou);

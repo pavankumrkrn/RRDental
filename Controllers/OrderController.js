@@ -111,6 +111,38 @@ const update = async (req, res) => {
   }
 };
 
+const incrementOrder = async (req, res) => {
+  try {
+    console.log("hi")
+    const client = await mongoClient.connect(URL, {
+      useNewURLParser: true,
+      useUnifiedTopology: true,
+    });
+    const db = client.db("OrderApplication");
+    const orderId = await db.collection("orderId").find().toArray();
+    console.log(orderId._id);
+    const newValue = +(orderId[0].value) + 1;
+    console.log(newValue);
+    await db.collection('orderId').updateMany({}, {
+      $set : {value : newValue}
+    }).then((data) => {
+      res.json({
+        value : newValue
+      })
+    }).catch((error) => {
+      res.json({
+        error: "Something went wrong",
+      });
+    })
+    
+  } catch (error) {
+    res.json({
+      error: "Something went wrong",
+    });
+    
+  }
+}
+
 const createOrder = async (req, res) => {
   try {
     const { order } = req.body;
@@ -302,6 +334,7 @@ module.exports = {
   updateOrder,
   deleteOrder,
   completeOrder,
+  incrementOrder,
   getOrder,
   sendOrders,
   getIncomeCompleteOrders,

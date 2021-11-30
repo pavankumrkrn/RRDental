@@ -10,7 +10,7 @@ body{font-family: 'Poppins', sans-serif;}
 .body_margin{margin-top:10px; margin-bottom:40px; padding:20px}
 .shadeimage{margin-top:20px}
 .padding_remove{padding:0 5px; !important}
-.img-circle{width:20px; margin-left:5px; }
+.img-circle{width:20px; height:20px; margin-left:5px; }
 .radiobutton{margin:9px 20px; float:left;}
 .radiobutton input{ margin-top: 3px; float: left; margin-right: 5px;}
 .bgmain{width:100%;background:#262261; padding:20px 0; margin-bottom:20px; text-align:center}
