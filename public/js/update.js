@@ -1,7 +1,7 @@
 var order = {};
 const renderOrder = async (id) => {
     debugger;
-    const response = await fetch('http://rr-orderform.com/getOrder/' + id, {
+    const response = await fetch('/getOrder/' + id, {
         mode: "no-cors"
     }).then((resp) => resp.json());
     const existingOrder = response.order;

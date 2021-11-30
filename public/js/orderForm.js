@@ -91,20 +91,17 @@ $("#contactNumber").on('input', (e) => {
   }
 })
 
-const incrementOrder = async () => {
-  const data = await fetch('http://rr-orderform.com/incrementOrder')
-  .then((resp) => resp.json()).then((data) => data).catch((error) => error.reponse);
-  if(data.value) {
-    order.orderId = data.value
-  }
-}
 
 $("#createOrderForm").submit(async (e) => {
   e.preventDefault();
     $("#createOrderForm").attr("style", "opacity : 0.5");
     $("#loading").attr('style', "display : block");
   const formData = e.currentTarget.elements;
-  await incrementOrder();
+  const data = await fetch('/incrementOrder')
+  .then((resp) => resp.json()).then((data) => data).catch((error) => error.reponse);
+  if(data.value) {
+    order.orderId = data.value
+  }
   for (let i in order) {
     if (typeof order[i] !== "object" && i !== "completed" && i!== "files" && i!=='orderId') {
       if (formData[i].type === "checkbox") {
