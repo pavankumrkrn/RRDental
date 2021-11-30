@@ -156,7 +156,28 @@ const render = (orders) => {
             '</td>' +
             '<td>' + Object.keys(mls).filter(i => order[i]).join(', ') + '</td>' +
             '<td>' +
-            "Upper Left: " + order.upperLeft.value + " Upper Right: " + order.upperRight.value + " Bottom Left: " + order.bottomLeft.value + " Bottom Right: " + order.bottomRight.value +
+
+            '<p><span class="mls_text"> UpperLeft :</span>'+
+    '<span class="mls_value">'+
+        order.upperLeft.value+
+    '</span>'+
+
+    '<span class="mls_text">Upper Right :</span>'+
+    '<span class="mls_value">'+
+    order.upperRight.value +
+    '</span>'+
+
+
+    '<span class="mls_text">  Bottom Left :</span>'+
+    '<span class="mls_value">'+
+
+        order.bottomLeft.value+
+    '</span>'+
+    '<span class="mls_text"> Bottom Right :</span>'+
+    '<span>'+
+   order.bottomRight.value +
+    '</span>'+
+    '</p>'+
             '</td>' +
             '<td>' +
             order.mlsInfo +
