@@ -13,13 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <script src="Bootstrap/js/jquery-1.12.0.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
-    
+
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function () {
             let url = location.href.split("/");
-            let route = url[url.length-1]
-            $("#"+route).prop("checked", true);
-            if(route === "completedOrders"){
+            let route = url[url.length - 1]
+            $("#" + route).prop("checked", true);
+            if (route === "completedOrders") {
                 $("#complete").prop("disabled", true);
             }
         });
@@ -29,135 +29,145 @@
     </script>
     <style>
         #loading {
-      display: none;
-      z-index: 999;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgb(204, 201, 201);
-      border-radius: 50%;
-      border-top-color: navy;
-      animation: spin 1s ease-in-out infinite;
-      -webkit-animation: spin 1s ease-in-out infinite;
-    }
+            display: none;
+            z-index: 999;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgb(204, 201, 201);
+            border-radius: 50%;
+            border-top-color: navy;
+            animation: spin 1s ease-in-out infinite;
+            -webkit-animation: spin 1s ease-in-out infinite;
+        }
 
-    @keyframes spin {
-      to {
-        -webkit-transform: rotate(360deg);
-      }
-    }
+        .mls_text {
+            color: #d9534f;
+        }
 
-    @-webkit-keyframes spin {
-      to {
-        -webkit-transform: rotate(360deg);
-      }
-    }
+        .mls_value {
+            display: inline-block;
+            min-width: 70px;
+        }
+
+        @keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
+
 <body>
     <div id="loading"></div>
     <div id="dashboard">
-    <div class="bgmain">
-        <img src="images/rrlogo-white.svg" class="dashboard_logo">
-    </div>
-    <div class="container-fluid">
-        <div class="col-xs-12">
-            <br>
-            <div class="col-sm-3 col-xs-12">
-                <div class="row">
-                    <!-- Actual search box -->
-                    <div class="form-group has-feedback has-search">
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        <input type="text" id="search" class="form-control" placeholder="Search" onkeyup="search()">
+        <div class="bgmain">
+            <img src="images/rrlogo-white.svg" class="dashboard_logo">
+        </div>
+        <div class="container-fluid">
+            <div class="col-xs-12">
+                <br>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="row">
+                        <!-- Actual search box -->
+                        <div class="form-group has-feedback has-search">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            <input type="text" id="search" class="form-control" placeholder="Search" onkeyup="search()">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="pull-right">
-                <!-- <span class="radiobutton"><input type="radio" name="dashboard" id="dashboard" onchange="getAll(this.id)">
+                <div class="pull-right">
+                    <!-- <span class="radiobutton"><input type="radio" name="dashboard" id="dashboard" onchange="getAll(this.id)">
                     All</span></span> -->
-                <span class="radiobutton"><input type="radio" name="incompleteOrders" id="incompleteOrders"
-                        onchange="getIncompleteOrders()"> Incomplete Orders</span></span>
-                <span class="radiobutton"><input type="radio" name="completedOrders" id="completedOrders"
-                        onchange="getCompleteOrders()">
-                    Complete Orders</span>
+                    <span class="radiobutton"><input type="radio" name="incompleteOrders" id="incompleteOrders"
+                            onchange="getIncompleteOrders()"> Incomplete Orders</span></span>
+                    <span class="radiobutton"><input type="radio" name="completedOrders" id="completedOrders"
+                            onchange="getCompleteOrders()">
+                        Complete Orders</span>
 
-                <button class="btn btn-primary" type="button" onclick="sendOrder()"> Send Order ID <span class="glyphicon glyphicon-send"
-                        aria-hidden="true" ></button>
-                <button class="btn btn-success" type="button" id="complete" onclick="completeOrders()"> Completed <span
-                        class="glyphicon glyphicon-ok"></span></button>
-                <button class="btn btn-primary" type="button" onclick="editOrder()"> Edit <span
-                        class="glyphicon glyphicon-edit"></span></button>
-                <button class="btn btn btn-danger" type="button" onclick="deleteOrders()"> Delete <span
-                        class="glyphicon glyphicon-trash"></span></button>
-                <button class="btn btn btn-warning" onclick="logout()"> Logout <span
-                        class="glyphicon glyphicon-off"></span></button>
+                    <button class="btn btn-primary" type="button" onclick="sendOrder()"> Send Order ID <span
+                            class="glyphicon glyphicon-send" aria-hidden="true"></button>
+                    <button class="btn btn-success" type="button" id="complete" onclick="completeOrders()"> Completed
+                        <span class="glyphicon glyphicon-ok"></span></button>
+                    <button class="btn btn-primary" type="button" onclick="editOrder()"> Edit <span
+                            class="glyphicon glyphicon-edit"></span></button>
+                    <button class="btn btn btn-danger" type="button" onclick="deleteOrders()"> Delete <span
+                            class="glyphicon glyphicon-trash"></span></button>
+                    <button class="btn btn btn-warning" onclick="logout()"> Logout <span
+                            class="glyphicon glyphicon-off"></span></button>
 
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12">
-            <div class="table-responsive">
-                <table class="clint-table table table-striped table-bordered table-hover" id="table">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">S.No</th>
-                            <th scope="col">Order Id</th>
-                            <th scope="col">Dr. Name</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Clinic Name</th>
-                            <th scope="col">Patient</th>
-                            <th scope="col">Contact No</th>
-                            <th scope="col">Expected Date</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Zirconia</th>
-                            <th scope="col">Zirconia Info</th>
-                            <th scope="col">Implant Prosthesis</th>
-                            <th scope="col">Implant Prosthesis Info</th>
-                            <th scope="col">MLS</th>
-                            <th scope="col">MLS Value</th>
-                            <th scope="col">MLS Info</th>
-                            <th scope="col">Additional Instructions</th>
-                            <th scope="col">Shade</th>
-                            <th scope="col">Enclosed with the case</th>
-                            <!-- <th scope="col">Additional Info</th> -->
-                            <th scope="col">Images</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersL">
-                        <% if(orders.length){ orders.forEach((order, orderIndex)=>{%>
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="clint-table table table-striped table-bordered table-hover" id="table">
+                        <thead>
                             <tr>
-                                <td scope="row"><input id="<%= order._id %>" type="checkbox" class="orders"
-                                        onchange='toggleOrder(this.id)'>
-                                </td>
-                                <td>
-                                    <%= orderIndex+1 %>
-                                </td>
-                                <td>
-                                    <%= order.orderId %>
-                                </td>
-                                <td>
-                                    <%= order.doctorName %>
-                                </td>
-                                <td>
-                                    <%= order.date %>
-                                </td>
-                                <td>
-                                    <%= order.clinicName %>
-                                </td>
-                                <td>
-                                    <%= order.patientName %>a
-                                </td>
-                                <td>
-                                    <%= order.contactNumber %>
-                                </td>
-                                <td>
-                                    <%= order.expectedDate %>
-                                </td>
-                                <td>
-                                    <%= order.hrs + " : " +order.min +" " +order.ampm %>
+                                <th scope="col"></th>
+                                <th scope="col">S.No</th>
+                                <th scope="col">Order Id</th>
+                                <th scope="col">Dr. Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Clinic Name</th>
+                                <th scope="col">Patient</th>
+                                <th scope="col">Contact No</th>
+                                <th scope="col">Expected Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Zirconia</th>
+                                <th scope="col">Zirconia Info</th>
+                                <th scope="col">Implant Prosthesis</th>
+                                <th scope="col">Implant Prosthesis Info</th>
+                                <th scope="col">MLS</th>
+                                <th scope="col">MLS Value</th>
+                                <th scope="col">MLS Info</th>
+                                <th scope="col">Additional Instructions</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">Enclosed with the case</th>
+                                <!-- <th scope="col">Additional Info</th> -->
+                                <th scope="col">Images</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersL">
+                            <% if(orders.length){ orders.forEach((order, orderIndex)=>{%>
+                                <tr>
+                                    <td scope="row"><input id="<%= order._id %>" type="checkbox" class="orders"
+                                            onchange='toggleOrder(this.id)'>
+                                    </td>
+                                    <td>
+                                        <%= orderIndex+1 %>
+                                    </td>
+                                    <td>
+                                        <%= order.orderId %>
+                                    </td>
+                                    <td>
+                                        <%= order.doctorName %>
+                                    </td>
+                                    <td>
+                                        <%= order.date %>
+                                    </td>
+                                    <td>
+                                        <%= order.clinicName %>
+                                    </td>
+                                    <td>
+                                        <%= order.patientName %>a
+                                    </td>
+                                    <td>
+                                        <%= order.contactNumber %>
+                                    </td>
+                                    <td>
+                                        <%= order.expectedDate %>
+                                    </td>
+                                    <td>
+                                        <%= order.hrs + " : " +order.min +" " +order.ampm %>
                                 </td>
                                 <td>
                                     <%= Object.keys(order.zirconia).filter((i)=> order.zirconia[i]).join(', ') %>
@@ -172,110 +182,143 @@
                                     <%= order.implantInfo %>
                                 </td>
                                 <td><%= Object.keys(mls).filter(i => order[i]).join(', ') %></td>
-                                <td><%=
-                                    "Upper Left: "+order.upperLeft.value+" Upper Right: "+order.upperRight.value+" Bottom Left: "+order.bottomLeft.value+" Bottom Right: "+order.bottomRight.value
-                                    %></td>
                                 <td>
-                                    <%= order.mlsInfo %>
-                                </td>
-                                <!-- <td>
+                                                <p>
+                                                    <span class="mls_text">
+                                            UpperLeft :</span>
+                                            <span class="mls_value">
+                                                <%=order.upperLeft.value%>
+                                            </span>
+
+                                            <span class="mls_text">
+                                                Upper Right :</span>
+                                            <span class="mls_value">
+
+                                                <%=order.upperRight.value%>
+                                            </span>
+
+
+                                            <span class="mls_text">
+                                                Bottom Left :</span>
+                                            <span class="mls_value">
+
+                                                <%=order.bottomLeft.value%>
+                                            </span>
+
+                                            <span class="mls_text">
+                                                Bottom Right :</span>
+                                            <span>
+
+                                                <%=order.bottomRight.value%>
+                                            </span>
+                                            </p>
+                                    <td>
+                                        <%= order.mlsInfo %>
+                                    </td>
+                                    <!-- <td>
                                     <%= order.additionalInfo %>
                                 </td> -->
-                                <td>
-                                    <%= order.shade %>
-                                </td>
-                                <td><%= Object.keys(enclosedWithCase).filter(i => order[i]).join(', ') %></td>
-                                <td><%= order.enclose %></td>
-                                <td  onClick="get('<%= order._id %>')">  <% if(order.files) { order.files.forEach((file, fileIndex)=>{%>
-                                    <img src="<%= file %>" class="img-circle">
-                                    <%})} %>
-                                </td>
-                            </tr>
-                            <%})} %>
-                    </tbody>
-                </table>
+                                    <td>
+                                        <%= order.shade %>
+                                    </td>
+                                    <td>
+                                        <%= Object.keys(enclosedWithCase).filter(i=> order[i]).join(', ') %>
+                                    </td>
+                                    <td>
+                                        <%= order.enclose %>
+                                    </td>
+                                    <td onClick="get('<%= order._id %>')">
+                                        <% if(order.files) { order.files.forEach((file, fileIndex)=>{%>
+                                            <img src="<%= file %>" class="img-circle">
+                                            <%})} %>
+                                    </td>
+                                </tr>
+                                <%})} %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-md-6">
-                <p class="paginationtext">Showing 1 to 10 of 57 entries</p>
+            <div class="col-xs-12">
+                <div class="col-md-6">
+                    <p class="paginationtext">Showing 1 to 10 of 57 entries</p>
+                </div>
+                <div class="col-md-6">
+                    <nav aria-label="Page navigation ">
+                        <ul class="pagination pull-right">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-            <div class="col-md-6">
-                <nav aria-label="Page navigation ">
-                    <ul class="pagination pull-right">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
 
 
 
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Uploaded Images</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                <li data-target="#myCarousel" data-slide-to="1"></li>
-
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" id="carouselImages">
-                                <div class="item active">
-                                    <img src="images/photo3.jpg" alt="Los Angeles">
-                                </div>
-
-                                <div class="item">
-                                    <img src="images/photo4.jpg" alt="Los Angeles">
-                                </div>
-
-
-                            </div>
-
-                            <!-- Left and right controls -->
-                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Uploaded Images</h4>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <!-- <button type="button" class="btn btn-primary">Download Images</button> -->
+                        <div class="modal-body">
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" id="carouselImages">
+                                    <div class="item active">
+                                        <img src="images/photo3.jpg" alt="Los Angeles">
+                                    </div>
+
+                                    <div class="item">
+                                        <img src="images/photo4.jpg" alt="Los Angeles">
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-primary">Download Images</button> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="../js/dashboard.js"></script>
+
 </html>
