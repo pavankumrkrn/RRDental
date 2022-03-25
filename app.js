@@ -16,7 +16,7 @@ app.use(express.static("public"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(cookieParser()); 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, async (req, res) => {
   console.log("Listening to " + port);
