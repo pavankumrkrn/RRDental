@@ -1,5 +1,14 @@
 
 const selectedOrders = {};
+const implantStrings = {
+    screwRetainedDMLS : 'Screw Retained DMLS - Crown & Bridge',
+    screwRetainedZirconia : 'Screw Retained Zirconia - Crown & Bridge',
+    screwRetainedDMLBar : 'Screw Retained DMLS Bar with PMMA',
+    prosthesiesDMLS : 'Ident Prosthesis (DMLS Framework with Zirconia Individual Crowns or Composite Full Crowns)',
+    prosthesisTitanium : 'Ident Prosthesis (Titanium Framework with Zirconia Individual Crowns or Composite Full Crowns)',
+    screwRetainedPM : 'Screw Retained PAULO MALO Frame Work Titanium  with Individual Crowns',
+    screwRetainedPeek: 'Screw Retained PEEK (DMLS Framework, PEEK with Composite)'
+}
 
 const search = (e) => {
     let input, filter, table, tr, td, i, txtValue;
@@ -143,18 +152,18 @@ const render = (orders) => {
             +order.hrs + " : " + order.min + " " + order.ampm +
             '</td>' +
             '<td>' +
-            Object.keys(order.zirconia).filter((i) => order.zirconia[i]).join(', ') +
+            Object.keys(order.zirconia).filter((i) => order.zirconia[i]).map((i) => i.split('zirconia').join('zirconia ')).join(', ') +
             '</td>' +
             '<td>' +
             order.zirconiaInfo +
             '</td>' +
             '<td>' +
-            Object.keys(order.implant).filter((i) => order.implant[i]).join(', ') +
+            Object.keys(order.implant).filter((i) => order.implant[i]).map(i => implantStrings[i]).join(', ') +
             '</td>' +
             '<td>' +
             order.implantInfo +
             '</td>' +
-            '<td>' + Object.keys(mls).filter(i => order[i]).join(', ') + '</td>' +
+            '<td>' + Object.keys(mls).filter(i => order[i]).map((i) => i.split('mls').join('mls ')).join(', ') + '</td>' +
             '<td>' +
 
             '<p><span class="mls_text"> UpperLeft :</span>'+

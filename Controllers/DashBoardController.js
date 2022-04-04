@@ -12,9 +12,19 @@ const dashBoard = async (req, res) => {
       useUnifiedTopology: true,
     });
     const db = client.db("OrderApplication");
-    const orders = await db.collection('Orders').find().toArray()
+    const orders = await db.collection('Orders').find().toArray();
+    const implantStrings = {
+      screwRetainedDMLS : 'Screw Retained DMLS - Crown & Bridge',
+      screwRetainedZirconia : 'Screw Retained Zirconia - Crown & Bridge',
+      screwRetainedDMLBar : 'Screw Retained DMLS Bar with PMMA',
+      prosthesiesDMLS : 'Ident Prosthesis (DMLS Framework with Zirconia Individual Crowns or Composite Full Crowns)',
+      prosthesisTitanium : 'Ident Prosthesis (Titanium Framework with Zirconia Individual Crowns or Composite Full Crowns)',
+      screwRetainedPM : 'Screw Retained PAULO MALO Frame Work Titanium  with Individual Crowns',
+      screwRetainedPeek: 'Screw Retained PEEK (DMLS Framework, PEEK with Composite)'
+    }
     res.render("dashBoard", {
       orders : orders,
+      implantStrings : implantStrings,
       mls : {
         mlsClassic : false,
         mlsPremium : false
