@@ -211,7 +211,7 @@ const logout = async () => {
     $("#dashboard").attr("style", "opacity : 0.5");
     $("#loading").attr('style', "display : block");
     await fetch("/logout")
-    location.href = "/";
+    location.href = "/adminlogin";
 }
 
 $("#images").on('click', (e) => {

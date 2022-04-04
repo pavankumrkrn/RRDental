@@ -21,14 +21,13 @@ const order = {
   },
   zirconiaInfo: "",
   implant: {
-    implantClassic: false,
-    implantPremium: false,
-    implantPlatinum: false,
-    implantMonolithic: false,
-    implantHollywood: false,
-    implantEmax: false,
-    implantTitanium: false,
-    implantPeek: false,
+    screwRetainedDMLS: false,
+    screwRetainedZirconia: false,
+    screwRetainedDMLBar: false,
+    prosthesiesDMLS: false,
+    prosthesisTitanium: false,
+    screwRetainedPM: false,
+    screwRetainedPeek: false,
   },
   implantInfo: "",
   mlsClassic: false,
@@ -97,6 +96,7 @@ $("#createOrderForm").submit(async (e) => {
     $("#createOrderForm").attr("style", "opacity : 0.5");
     $("#loading").attr('style', "display : block");
   const formData = e.currentTarget.elements;
+  debugger;
   const data = await fetch('/incrementOrder')
   .then((resp) => resp.json()).then((data) => data).catch((error) => error.reponse);
   if(data.value) {

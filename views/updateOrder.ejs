@@ -17,6 +17,12 @@
     .brightActive {
       background-color: #34abf4;
     }
+    .implant {
+      min-width: 18px !important
+    }
+    #implantList > li {
+      gap: 5px !important;
+    }
     .form-control {
       margin-left: 9px;
       margin-bottom: 9px;
@@ -220,22 +226,20 @@
             </div>
             <div class="row list">
               <ol id="implantList">
-                <li><span>1. <img src="images/ident-logo.svg"> Classic </span><input type="checkbox" class="implant"
-                    id="implantClassic" name="implantClassic"></li>
-                <li><span>2. <img src="images/ident-logo.svg"> Premium </span><input type="checkbox" class="implant"
-                    id="implantPremium" name="implantPremium"></li>
-                <li><span>3. <img src="images/ident-logo.svg"> Platinum </span><input type="checkbox" class="implant"
-                    id="implantPlatinum" name="implantPlatinum"></li>
-                <li><span>4. <img src="images/ident-logo.svg"> Monolithic </span><input type="checkbox" class="implant"
-                    id="implantMonolithic" name="implantMonolithic"></li>
-                <li><span>5. <img src="images/ident-logo.svg"> Hollywood Smile </span><input type="checkbox"
-                    class="implant" id="implantHollywood" name="implantHollywood"></li>
-                <li><span>6. e-max CAD </span><input type="checkbox" class="implant" id="implantEmax"
-                    name="implantEmax"></li>
-                <li><span>7. Titanium Crown & Bridge </span><input type="checkbox" class="implant" id="implantTitanium"
-                    name="implantTitanium"></li>
-                <li><span>8. Peek Crown & Bridge </span><input type="checkbox" class="implant" id="implantPeek"
-                    name="implantPeek"></li>
+                <li><span>1. <img src="images/ident-logo.svg"> Screw Retained DMLS - Crown & Bridge </span><input type="checkbox" class="implant"
+                  id="screwRetainedDMLS" name="screwRetainedDMLS"></li>
+              <li><span>2. <img src="images/ident-logo.svg"> Screw Retained Zirconia - Crown & Bridge </span><input type="checkbox" class="implant"
+                  id="screwRetainedZirconia" name="screwRetainedZirconia"></li>
+              <li><span>3. <img src="images/ident-logo.svg"> Screw Retained DMLS Bar with PMMA </span><input type="checkbox" class="implant"
+                  id="screwRetainedDMLBar" name="screwRetainedDMLBar"></li>
+              <li><span>4. <img src="images/ident-logo.svg"> Prosthesis (DMLS Framework with Zirconia Individual Crowns or Composite Full Crowns) </span><input type="checkbox" class="implant"
+                  id="prosthesiesDMLS" name="prosthesiesDMLS"></li>
+              <li><span>5. <img src="images/ident-logo.svg"> Prosthesis (Titanium Framework with Zirconia Individual Crowns or Composite Full Crowns) </span><input type="checkbox"
+                  class="implant" id="prosthesisTitanium" name="prosthesisTitanium"></li>
+              <li><span>6. Screw Retained PAULO MALO Frame Work Titanium  with Individual Crowns  </span><input type="checkbox" class="implant" id="screwRetainedPM"
+                  name="screwRetainedPM"></li>
+              <li><span>7. Screw Retained PEEK (DMLS Framework, PEEK with Composite) </span><input type="checkbox" class="implant" id="screwRetainedPeek"
+                  name="screwRetainedPeek"></li>
               </ol>
               <div class="col-xs-12 gapmargin details">
                 <textarea class="area-text area-101" id="implantInfo" name="implantInfo"
